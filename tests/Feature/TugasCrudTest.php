@@ -23,7 +23,7 @@ class TugasCrudTest extends TestCase
     {
         $this->get(route('tugas.index'))
             ->assertOk()
-            ->assertSee('Teks yang sengaja salah');
+            ->assertSee('Belum ada tugas.');
     }
 
     public function test_create_menyimpan_tugas_baru(): void
