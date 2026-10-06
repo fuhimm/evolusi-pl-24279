@@ -2,24 +2,21 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Tugas;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // // User::factory(10)->create();
-
-        // User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $tugasList = [
+            ['nama' => 'Tugas 1', 'status' => 'Selesai'],
+            ['nama' => 'Tugas 2', 'status' => 'Belum'],
+            ['nama' => 'Tugas 3', 'status' => 'Belum'],
+        ];
+        
+        foreach ($tugasList as $t) {
+            Tugas::updateOrCreate(['nama' => $t['nama']], $t);
+        }
     }
 }
