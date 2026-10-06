@@ -1,9 +1,9 @@
 @extends('tugas.layout')
 
-@section('title', 'Daftar Tugas')
+@section('title', 'Daftar Tugas!')
 
 @section('content')
-    <h1>Daftar Tugas</h1>
+    <h1>Daftar Tugas!</h1>
     <p><a class="btn" href="{{ route('tugas.create') }}">Tambah tugas</a></p>
 
     @if ($daftar->isEmpty())
