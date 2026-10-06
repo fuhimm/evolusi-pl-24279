@@ -1,35 +1,40 @@
-FROM php:8.3-cli-bookworm
+# Stage 1: Build vendor dependencies
+FROM composer:2.7 AS builder
+WORKDIR /app
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --no-interaction --prefer-dist --optimize-autoloader
+
+# Stage 2: Production image
+FROM php:8.3-cli-alpine3.19
+
+# Install runtime dependencies for PHP extensions
+RUN apk add --no-cache \
+    sqlite-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    && docker-php-ext-install pdo_sqlite mbstring xml bcmath
 
 WORKDIR /var/www
 
-# 1. Install sistem dependensi dan ekstensi PHP yang dibutuhkan Laravel
-RUN apt-get update && apt-get install -y \
-    libsqlite3-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    && docker-php-ext-install pdo_sqlite mbstring xml bcmath \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+# Salin dependensi dari builder
+COPY --from=builder /app/vendor ./vendor
 
-# 2. Ambil Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# 3. Kopi file composer terlebih dahulu untuk memanfaatkan Docker layer caching
-# Alasan: Dependensi jarang berubah dibanding kode sumber aplikasi.
-COPY composer.json composer.lock ./
-
-# 4. Install dependensi composer
-RUN composer install --no-dev --no-scripts --no-interaction --prefer-dist --optimize-autoloader
-
-# 5. Kopi seluruh source code aplikasi
+# Salin source code
 COPY . .
 
-# 6. Bersihkan cache dan setup env
+# Setup env dan cache
 RUN rm -f bootstrap/cache/*.php && \
     cp .env.example .env && \
     php artisan key:generate
 
-# 7. Expose port dan command
+# Tambahkan USER non-root
+RUN adduser -D -u 1000 laravel && \
+    chown -R laravel:laravel /var/www
+USER laravel
+
+# Tambahkan HEALTHCHECK
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -qO- http://127.0.0.1:8000/api/tugas || exit 1
+
 EXPOSE 8000
 CMD ["sh", "-c", "php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=8000"]
