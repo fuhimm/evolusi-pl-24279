@@ -79,3 +79,4 @@ jobs:
           path: dist
       - name: Echo dist files
         run: find dist -type f
+        working-directory: .
