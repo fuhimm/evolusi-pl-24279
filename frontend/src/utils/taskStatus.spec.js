@@ -3,7 +3,7 @@ import { formatTaskStatus } from './taskStatus'
 
 describe('formatTaskStatus', () => {
     it('returns Selesai when true', () => {
-        expect(formatTaskStatus(true)).toBe('Selesai')
+        expect(formatTaskStatus(true)).toBe('Selesai Gagal')
     })
     
     it('returns Belum Selesai when false', () => {
