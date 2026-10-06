@@ -10,13 +10,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $tugasList = [
-            ['nama' => 'Tugas 1', 'status' => 'Selesai'],
-            ['nama' => 'Tugas 2', 'status' => 'Belum'],
-            ['nama' => 'Tugas 3', 'status' => 'Belum'],
+            ['judul' => 'Tugas 1', 'deskripsi' => 'Deskripsi 1', 'selesai' => true],
+            ['judul' => 'Tugas 2', 'deskripsi' => 'Deskripsi 2', 'selesai' => false],
+            ['judul' => 'Tugas 3', 'deskripsi' => 'Deskripsi 3', 'selesai' => false],
         ];
         
         foreach ($tugasList as $t) {
-            Tugas::updateOrCreate(['nama' => $t['nama']], $t);
+            Tugas::updateOrCreate(['judul' => $t['judul']], $t);
         }
     }
 }
