@@ -7,7 +7,7 @@ Repository praktikum **Konstruksi dan Evolusi Perangkat Lunak**. Berisi aplikasi
 | | |
 |---|---|
 | Nama | Ahmad Fahim |
-| NIM | 24/545644/SV/24279 |
+| NIM | 24/535644/SV/24279 |
 | Kelas | AA |
 | Mata kuliah | Konstruksi dan Evolusi Perangkat Lunak |
 | Dosen pengampu | Galih Malela Damaraji, S.Pd., M.Eng. |
